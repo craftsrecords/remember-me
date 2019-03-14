@@ -6,5 +6,5 @@ import java.net.URL;
 
 @FunctionalInterface
 public interface CreateBookmark {
-    Bookmark forResource(URL link);
+    Bookmark forResource(URL url);
 }
