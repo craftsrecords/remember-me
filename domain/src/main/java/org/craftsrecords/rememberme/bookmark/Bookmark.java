@@ -6,11 +6,12 @@ public class Bookmark {
 
     private URL url;
 
-    Bookmark(URL url) {
+    public Bookmark(URL url) {
         this.url = url;
     }
 
-    URL getUrl() {
+    public URL getUrl() {
         return url;
     }
+
 }

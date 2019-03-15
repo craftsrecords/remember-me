@@ -5,6 +5,7 @@ import org.craftsrecords.rememberme.bookmark.Bookmark;
 import java.net.URL;
 
 public class TestContext {
-    Bookmark createdBookmark;
     URL link;
+    Bookmark createdBookmark;
+    boolean alreadyBookmarked;
 }
