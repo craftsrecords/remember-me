@@ -6,6 +6,7 @@ Feature: Create a bookmark
 
   Scenario: I want to create a new bookmark
     Given a link towards a useful resource
+    And some tags classifying the resource
     When I bookmark it
     Then it is saved among my other bookmarks
 

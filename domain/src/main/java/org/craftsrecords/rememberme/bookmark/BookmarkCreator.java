@@ -3,6 +3,7 @@ package org.craftsrecords.rememberme.bookmark;
 import org.craftsrecords.rememberme.api.CreateBookmark;
 
 import java.net.URL;
+import java.util.Collection;
 
 public class BookmarkCreator implements CreateBookmark {
 
@@ -13,8 +14,8 @@ public class BookmarkCreator implements CreateBookmark {
     }
 
     @Override
-    public Bookmark forResource(URL url) {
-        Bookmark bookmark = new Bookmark(url);
+    public Bookmark forResource(URL url, Collection<String> tags) {
+        Bookmark bookmark = new Bookmark(url, new Tags(tags));
         return bookmarks.save(bookmark);
     }
 

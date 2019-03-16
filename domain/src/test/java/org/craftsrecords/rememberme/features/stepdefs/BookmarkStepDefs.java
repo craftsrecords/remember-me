@@ -5,8 +5,10 @@ import org.craftsrecords.rememberme.api.CreateBookmark;
 import org.craftsrecords.rememberme.bookmark.AlreadyBookmarkedException;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.craftsrecords.rememberme.bookmark.Bookmarks;
+import org.craftsrecords.rememberme.bookmark.Tags;
 
 import java.net.URL;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,17 +28,29 @@ public class BookmarkStepDefs implements En {
                     context.link = url;
                 });
 
+        Given("^some tags classifying the resource$",
+                () -> {
+                    context.tags.add("testing");
+                    context.tags.add("dev");
+                });
+
         When("^I bookmark it$",
                 () -> {
                     try {
-                        context.createdBookmark = createBookmark.forResource(context.link);
+                        createBookmark.forResource(context.link, context.tags);
                     } catch (AlreadyBookmarkedException e) {
                         context.alreadyBookmarked = true;
                     }
                 });
 
         Then("^it is saved among my other bookmarks$",
-                () -> assertThat(context.createdBookmark).isNotNull());
+                () -> {
+                    Optional<Bookmark> bookmark = bookmarks.getBy(context.link);
+                    assertThat(bookmark).isPresent();
+
+                    Bookmark expected = new Bookmark(context.link, new Tags(context.tags));
+                    assertThat(bookmark.get()).isEqualTo(expected);
+                });
 
         Then("^I am notified that the bookmark already exists$",
                 () -> assertThat(context.alreadyBookmarked).isTrue());
