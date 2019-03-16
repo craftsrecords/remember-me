@@ -24,9 +24,12 @@ public class BookmarkStepDefs implements En {
         Given("^a link that I have bookmarked$",
                 () -> {
                     URL url = new URL("https://junit.org/junit5");
-                    bookmarks.save(new Bookmark(url));
+                    bookmarks.save(new Bookmark(url, ""));
                     context.link = url;
                 });
+
+        Given("^a name describing the resource$",
+                () -> context.name = "A great testing framework");
 
         Given("^some tags classifying the resource$",
                 () -> {
@@ -37,7 +40,7 @@ public class BookmarkStepDefs implements En {
         When("^I bookmark it$",
                 () -> {
                     try {
-                        createBookmark.forResource(context.link, context.tags);
+                        createBookmark.forResource(context.link, context.name, context.tags);
                     } catch (AlreadyBookmarkedException e) {
                         context.alreadyBookmarked = true;
                     }
@@ -48,7 +51,11 @@ public class BookmarkStepDefs implements En {
                     Optional<Bookmark> bookmark = bookmarks.getBy(context.link);
                     assertThat(bookmark).isPresent();
 
-                    Bookmark expected = new Bookmark(context.link, new Tags(context.tags));
+                    Bookmark expected = new Bookmark(
+                            context.link,
+                            context.name,
+                            new Tags(context.tags)
+                    );
                     assertThat(bookmark.get()).isEqualTo(expected);
                 });
 

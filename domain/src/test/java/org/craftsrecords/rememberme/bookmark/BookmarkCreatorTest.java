@@ -15,26 +15,28 @@ public class BookmarkCreatorTest {
     private CreateBookmark createBookmark;
     private Bookmarks bookmarks;
     private URL url;
+    private String name;
 
     @Before
     public void set_up() throws Exception {
         bookmarks = new InMemoryBookmarks();
         createBookmark = new BookmarkCreator(bookmarks);
         url = new URL("http://www.test.com");
+        name = "Some name";
     }
 
     @Test
     public void should_create_the_bookmark() {
-        Bookmark createdBookmark = createBookmark.forResource(url, emptySet());
-        Bookmark expected = new Bookmark(url, Tags.empty());
+        Bookmark createdBookmark = createBookmark.forResource(url, name, emptySet());
+        Bookmark expected = new Bookmark(url, name);
 
         assertThat(createdBookmark).isEqualTo(expected);
     }
 
     @Test(expected = AlreadyBookmarkedException.class)
     public void should_not_create_the_bookmark_if_it_already_exists() {
-        bookmarks.save(new Bookmark(url));
-        createBookmark.forResource(url, emptySet());
+        bookmarks.save(new Bookmark(url, name));
+        createBookmark.forResource(url, name, emptySet());
     }
 
 }

@@ -14,8 +14,8 @@ public class BookmarkCreator implements CreateBookmark {
     }
 
     @Override
-    public Bookmark forResource(URL url, Collection<String> tags) {
-        Bookmark bookmark = new Bookmark(url, new Tags(tags));
+    public Bookmark forResource(URL url, String name, Collection<String> tags) {
+        Bookmark bookmark = new Bookmark(url, name, new Tags(tags));
         return bookmarks.save(bookmark);
     }
 

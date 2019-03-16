@@ -7,5 +7,5 @@ import java.util.Collection;
 
 @FunctionalInterface
 public interface CreateBookmark {
-    Bookmark forResource(URL url, Collection<String> tags);
+    Bookmark forResource(URL url, String name, Collection<String> tags);
 }

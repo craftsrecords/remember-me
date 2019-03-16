@@ -6,14 +6,16 @@ import java.util.Objects;
 public class Bookmark {
 
     private URL url;
+    private String name;
     private Tags tags;
 
-    public Bookmark(URL url) {
-        this(url, Tags.empty());
+    public Bookmark(URL url, String name) {
+        this(url, name, Tags.empty());
     }
 
-    public Bookmark(URL url, Tags tags) {
+    public Bookmark(URL url, String name, Tags tags) {
         this.url = url;
+        this.name = name;
         this.tags = tags;
     }
 
@@ -28,11 +30,15 @@ public class Bookmark {
         }
         Bookmark bookmark = (Bookmark) o;
         return Objects.equals(url, bookmark.url)
+                && Objects.equals(name, bookmark.name)
                 && Objects.equals(tags, bookmark.tags);
     }
 
     @Override
     public int hashCode() {
-        return (31 * url.hashCode()) + tags.hashCode();
+        int result = url != null ? url.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        return result;
     }
 }

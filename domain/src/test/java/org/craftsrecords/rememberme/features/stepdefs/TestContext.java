@@ -7,5 +7,6 @@ import java.util.Set;
 public class TestContext {
     URL link;
     boolean alreadyBookmarked;
+    String name;
     Set<String> tags = new HashSet<>();
 }
