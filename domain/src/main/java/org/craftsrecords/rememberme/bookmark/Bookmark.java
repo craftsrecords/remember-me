@@ -23,6 +23,14 @@ public class Bookmark {
         return url;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Tags getTags() {
+        return tags;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {
