@@ -5,6 +5,7 @@ import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.craftsrecords.rememberme.bookmark.Bookmarks;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +28,11 @@ public class InMemoryBookmarks implements Bookmarks {
     public Optional<Bookmark> getBy(URL url) {
         Bookmark bookmark = bookmarks.get(url);
         return Optional.ofNullable(bookmark);
+    }
+
+    @Override
+    public Collection<Bookmark> getAll() {
+        return bookmarks.values();
     }
 
 }

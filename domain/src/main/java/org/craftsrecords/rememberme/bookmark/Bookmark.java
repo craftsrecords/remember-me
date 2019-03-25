@@ -31,6 +31,10 @@ public class Bookmark {
         return tags;
     }
 
+    public boolean hasTag(String tag) {
+        return tags.contains(tag);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {

@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Optional;
 
 import static java.util.Collections.singleton;
@@ -60,7 +61,15 @@ public class BookmarkRepositoryTest {
         URL url = bookmark.getUrl();
 
         Optional<Bookmark> retrieved = bookmarkRepository.getBy(url);
-        assertThat(retrieved.get()).isEqualTo(bookmark);
+        assertThat(retrieved).hasValue(bookmark);
+    }
+
+    @Test
+    public void should_retrieve_all_bookmarks() {
+        jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
+
+        Collection<Bookmark> retrieved = bookmarkRepository.getAll();
+        assertThat(retrieved).containsOnly(bookmark);
     }
 
 }

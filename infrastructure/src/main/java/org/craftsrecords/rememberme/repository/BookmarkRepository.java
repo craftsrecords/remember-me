@@ -5,7 +5,10 @@ import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.craftsrecords.rememberme.bookmark.Bookmarks;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class BookmarkRepository implements Bookmarks {
 
@@ -30,6 +33,13 @@ public class BookmarkRepository implements Bookmarks {
     public Optional<Bookmark> getBy(URL url) {
         return repository.findByUrl(url)
                 .map(BookmarkEntity::toValueObject);
+    }
+
+    @Override
+    public Collection<Bookmark> getAll() {
+        return StreamSupport.stream(repository.findAll().spliterator(), false)
+                .map(BookmarkEntity::toValueObject)
+                .collect(Collectors.toList());
     }
 
 }

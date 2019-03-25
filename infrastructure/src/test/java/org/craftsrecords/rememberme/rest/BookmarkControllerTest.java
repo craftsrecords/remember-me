@@ -1,25 +1,23 @@
 package org.craftsrecords.rememberme.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.craftsrecords.rememberme.api.CreateBookmark;
-import org.craftsrecords.rememberme.bookmark.Bookmark;
-import org.craftsrecords.rememberme.bookmark.Tags;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static java.util.Collections.singletonList;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BookmarkController.class)
 @RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class BookmarkControllerTest {
 
     @Autowired
@@ -27,14 +25,6 @@ public class BookmarkControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public CreateBookmark createBookmark() {
-            return (url, name, tags) -> new Bookmark(url, name, new Tags(tags));
-        }
-    }
 
     @Test
     public void should_return_201_when_the_bookmark_is_created() throws Exception {
@@ -64,6 +54,13 @@ public class BookmarkControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void test() throws Exception {
+        mockMvc.perform(
+                get("/bookmarks").param("tags", "test", "...")
+        ).andExpect(status().isOk());
     }
 
 }

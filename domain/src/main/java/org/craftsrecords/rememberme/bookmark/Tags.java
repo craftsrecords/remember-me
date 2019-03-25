@@ -23,6 +23,10 @@ public class Tags {
         return Collections.unmodifiableSet(tags);
     }
 
+    public boolean contains(String tag) {
+        return tags.contains(tag);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
