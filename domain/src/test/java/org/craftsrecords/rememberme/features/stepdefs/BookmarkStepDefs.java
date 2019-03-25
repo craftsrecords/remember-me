@@ -6,14 +6,12 @@ import org.craftsrecords.rememberme.api.FindBookmarks;
 import org.craftsrecords.rememberme.bookmark.AlreadyBookmarkedException;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.craftsrecords.rememberme.bookmark.Bookmarks;
-import org.craftsrecords.rememberme.bookmark.Tags;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,13 +23,14 @@ public class BookmarkStepDefs implements En {
                             Bookmarks bookmarks) {
 
         Given("^a link towards a useful resource$",
-                () -> context.link = new URL("https://junit.org/junit5"));
+                () -> context.link = "https://junit.org/junit5");
 
         Given("^a link that I have bookmarked$",
                 () -> {
-                    URL url = new URL("https://junit.org/junit5");
-                    bookmarks.save(new Bookmark(url, ""));
-                    context.link = url;
+                    Bookmark bookmark = Bookmark.create("https://junit.org/junit5", "JUnit", emptySet());
+                    bookmarks.save(bookmark);
+                    context.link = bookmark.getUrl();
+                    context.name = bookmark.getName();
                 });
 
         Given("^a name describing the resource$",
@@ -66,12 +65,12 @@ public class BookmarkStepDefs implements En {
                     Optional<Bookmark> bookmark = bookmarks.getBy(context.link);
                     assertThat(bookmark).isPresent();
 
-                    Bookmark expected = new Bookmark(
+                    Bookmark expected = Bookmark.create(
                             context.link,
                             context.name,
-                            new Tags(context.tags)
+                            context.tags
                     );
-                    assertThat(bookmark.get()).isEqualTo(expected);
+                    assertThat(bookmark).hasValue(expected);
                 });
 
         Then("^I am notified that the bookmark already exists$",
@@ -84,16 +83,12 @@ public class BookmarkStepDefs implements En {
 
     }
 
-    private List<Bookmark> createBookmarks() throws MalformedURLException {
+    private List<Bookmark> createBookmarks() {
         List<Bookmark> bookmarks = new ArrayList<>();
-        bookmarks.add(createBookmark("https://gitlab.com", "GitLab", "code"));
-        bookmarks.add(createBookmark("https://junit.org/junit5", "JUnit", "test"));
-        bookmarks.add(createBookmark("https://news.ycombinator.com/news", "HN", "news"));
+        bookmarks.add(Bookmark.create("https://gitlab.com", "GitLab", singleton("code")));
+        bookmarks.add(Bookmark.create("https://junit.org/junit5", "JUnit", singleton("test")));
+        bookmarks.add(Bookmark.create("https://news.ycombinator.com/news", "HN", singleton("news")));
         return bookmarks;
-    }
-
-    private Bookmark createBookmark(String url, String name, String tag) throws MalformedURLException {
-        return new Bookmark(new URL(url), name, new Tags(singleton(tag)));
     }
 
 }

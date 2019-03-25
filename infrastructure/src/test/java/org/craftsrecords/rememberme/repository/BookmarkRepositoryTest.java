@@ -2,7 +2,6 @@ package org.craftsrecords.rememberme.repository;
 
 import org.craftsrecords.rememberme.bookmark.AlreadyBookmarkedException;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
-import org.craftsrecords.rememberme.bookmark.Tags;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -32,13 +29,13 @@ public class BookmarkRepositoryTest {
 
     private BookmarkRepository bookmarkRepository;
     private Bookmark bookmark;
+    private String url;
 
     @Before
-    public void set_up() throws MalformedURLException {
+    public void set_up() {
         bookmarkRepository = new BookmarkRepository(jpaBookmarkRepository);
-        URL url = new URL("http://www.test.com");
-        Tags tags = new Tags(singleton("tag"));
-        bookmark = new Bookmark(url, "test", tags);
+        url = "http://www.test.com";
+        bookmark = Bookmark.create(url, "test", singleton("tag"));
     }
 
     @Test
@@ -58,7 +55,6 @@ public class BookmarkRepositoryTest {
     @Test
     public void should_retrieve_bookmark_by_url() {
         jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
-        URL url = bookmark.getUrl();
 
         Optional<Bookmark> retrieved = bookmarkRepository.getBy(url);
         assertThat(retrieved).hasValue(bookmark);

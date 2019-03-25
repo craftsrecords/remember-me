@@ -15,9 +15,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@RunWith(SpringRunner.class)
 public class BookmarkControllerTest {
 
     @Autowired
@@ -27,7 +27,7 @@ public class BookmarkControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void should_return_201_when_the_bookmark_is_created() throws Exception {
+    public void should_respond_201_when_the_bookmark_is_created() throws Exception {
         BookmarkPayload bookmarkPayload = new BookmarkPayload(
                 "http://www.test.com",
                 "name",
@@ -42,7 +42,7 @@ public class BookmarkControllerTest {
     }
 
     @Test
-    public void should_return_400_when_the_request_is_invalid() throws Exception {
+    public void should_respond_400_when_the_request_is_invalid() throws Exception {
         BookmarkPayload bookmarkPayload = new BookmarkPayload(
                 "invalid://url.com",
                 "name",
@@ -57,10 +57,11 @@ public class BookmarkControllerTest {
     }
 
     @Test
-    public void test() throws Exception {
+    public void should_respond_200_when_a_search_is_successfully_done() throws Exception {
         mockMvc.perform(
-                get("/bookmarks").param("tags", "test", "...")
-        ).andExpect(status().isOk());
+                get("/bookmarks")
+                        .param("tags", "craftsmanship", "clean-code"))
+                .andExpect(status().isOk());
     }
 
 }

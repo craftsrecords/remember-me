@@ -5,31 +5,46 @@ import org.craftsrecords.rememberme.stubs.InMemoryBookmarks;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URL;
+import java.util.Optional;
+import java.util.Set;
 
-import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookmarkCreatorTest {
 
     private CreateBookmark createBookmark;
-    private URL url;
-    private String name;
+    private Bookmarks bookmarks;
 
     @Before
-    public void set_up() throws Exception {
-        Bookmarks bookmarks = new InMemoryBookmarks();
+    public void set_up() {
+        bookmarks = new InMemoryBookmarks();
         createBookmark = new BookmarkCreator(bookmarks);
-        url = new URL("http://www.test.com");
-        name = "Some name";
     }
 
     @Test
     public void should_create_the_bookmark() {
-        Bookmark createdBookmark = createBookmark.forResource(url, name, emptySet());
-        Bookmark expected = new Bookmark(url, name);
+        String url = "http://www.test.com";
+        String name = "Some name";
+        Set<String> tags = singleton("tag");
 
-        assertThat(createdBookmark).isEqualTo(expected);
+        createBookmark.forResource(url, name, tags);
+
+        Optional<Bookmark> saved = bookmarks.getBy(url);
+        Bookmark expected = Bookmark.create(url, name, tags);
+
+        assertThat(saved).hasValue(expected);
+    }
+
+    @Test
+    public void should_return_the_bookmark_after_creating_it() {
+        String url = "http://www.test.com";
+        String name = "Some name";
+        Set<String> tags = singleton("tag");
+
+        Bookmark createdBookmark = createBookmark.forResource(url, name, tags);
+
+        assertThat(createdBookmark).isNotNull();
     }
 
 }

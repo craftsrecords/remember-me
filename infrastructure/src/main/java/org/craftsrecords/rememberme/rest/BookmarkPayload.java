@@ -1,10 +1,5 @@
 package org.craftsrecords.rememberme.rest;
 
-import org.craftsrecords.rememberme.bookmark.Bookmark;
-import org.craftsrecords.rememberme.bookmark.Tags;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 
 class BookmarkPayload {
@@ -20,10 +15,6 @@ class BookmarkPayload {
         this.url = url;
         this.name = name;
         this.tags = tags;
-    }
-
-    Bookmark toBookmark() throws MalformedURLException {
-        return new Bookmark(new URL(url), name, new Tags(tags));
     }
 
 }

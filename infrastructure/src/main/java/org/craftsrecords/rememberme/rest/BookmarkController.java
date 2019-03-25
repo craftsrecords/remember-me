@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 
 @RestController
@@ -26,8 +24,8 @@ public class BookmarkController {
     }
 
     @PostMapping
-    public ResponseEntity createBookmark(@RequestBody BookmarkPayload bookmarkPayload) throws MalformedURLException {
-        createBookmark.forResource(new URL(bookmarkPayload.url), bookmarkPayload.name, bookmarkPayload.tags);
+    public ResponseEntity createBookmark(@RequestBody BookmarkPayload bookmarkPayload) {
+        createBookmark.forResource(bookmarkPayload.url, bookmarkPayload.name, bookmarkPayload.tags);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -37,8 +35,8 @@ public class BookmarkController {
         return ResponseEntity.ok(bookmarks);
     }
 
-    @ExceptionHandler(MalformedURLException.class)
-    public void handle(HttpServletResponse response, MalformedURLException exception) throws IOException {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void handle(HttpServletResponse response, IllegalArgumentException exception) throws IOException {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, exception.getMessage());
     }
 

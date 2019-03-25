@@ -4,7 +4,6 @@ import org.craftsrecords.rememberme.bookmark.AlreadyBookmarkedException;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.craftsrecords.rememberme.bookmark.Bookmarks;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ public class BookmarkRepository implements Bookmarks {
 
     @Override
     public Bookmark save(Bookmark bookmark) throws AlreadyBookmarkedException {
-        URL url = bookmark.getUrl();
+        String url = bookmark.getUrl();
         repository.findByUrl(url).ifPresent(b -> {
             throw new AlreadyBookmarkedException(url);
         });
@@ -30,7 +29,7 @@ public class BookmarkRepository implements Bookmarks {
     }
 
     @Override
-    public Optional<Bookmark> getBy(URL url) {
+    public Optional<Bookmark> getBy(String url) {
         return repository.findByUrl(url)
                 .map(BookmarkEntity::toValueObject);
     }

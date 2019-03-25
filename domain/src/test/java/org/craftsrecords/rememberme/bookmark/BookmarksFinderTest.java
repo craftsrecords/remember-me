@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -24,7 +22,7 @@ public class BookmarksFinderTest {
     private static FindBookmarks findBookmarks;
 
     @Parameters
-    public static Collection<Object[]> data() {
+    public static Collection<Object[]> testCases() {
         bookmarks = new InMemoryBookmarks();
         findBookmarks = new BookmarksFinder(bookmarks);
 
@@ -53,12 +51,7 @@ public class BookmarksFinderTest {
     }
 
     private static Bookmark saveBookmark(String url, String name, String... tags) {
-        try {
-            Bookmark bookmark = new Bookmark(new URL(url), name, new Tags(asList(tags)));
-            return bookmarks.save(bookmark);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        Bookmark bookmark = Bookmark.create(url, name, asList(tags));
+        return bookmarks.save(bookmark);
     }
 }

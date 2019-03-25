@@ -1,19 +1,17 @@
 package org.craftsrecords.rememberme.repository;
 
 import org.craftsrecords.rememberme.bookmark.Bookmark;
-import org.craftsrecords.rememberme.bookmark.Tags;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.net.URL;
 import java.util.Set;
 
 @Entity
 public class BookmarkEntity {
 
     @Id
-    private URL url;
+    private String url;
 
     private String name;
 
@@ -23,7 +21,7 @@ public class BookmarkEntity {
     public BookmarkEntity() {
     }
 
-    private BookmarkEntity(URL url, String name, Set<String> tags) {
+    private BookmarkEntity(String url, String name, Set<String> tags) {
         this.url = url;
         this.name = name;
         this.tags = tags;
@@ -33,12 +31,12 @@ public class BookmarkEntity {
         return new BookmarkEntity(
                 bookmark.getUrl(),
                 bookmark.getName(),
-                bookmark.getTags().toSet()
+                bookmark.getTags()
         );
     }
 
     Bookmark toValueObject() {
-        return new Bookmark(url, name, new Tags(tags));
+        return Bookmark.create(url, name, tags);
     }
 
 }

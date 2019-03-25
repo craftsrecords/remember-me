@@ -1,7 +1,10 @@
 package org.craftsrecords.rememberme.bookmark;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 public class Bookmark {
 
@@ -9,26 +12,37 @@ public class Bookmark {
     private String name;
     private Tags tags;
 
-    public Bookmark(URL url, String name) {
-        this(url, name, Tags.empty());
-    }
-
-    public Bookmark(URL url, String name, Tags tags) {
+    private Bookmark(URL url, String name, Tags tags) {
         this.url = url;
         this.name = name;
         this.tags = tags;
     }
 
-    public URL getUrl() {
-        return url;
+    public static Bookmark create(String url, String name, Collection<String> tags) {
+        try {
+            checkIfEmpty(name);
+            return new Bookmark(new URL(url), name, new Tags(tags));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid url: " + e.getMessage());
+        }
+    }
+
+    private static void checkIfEmpty(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Invalid name: it should not be empty");
+        }
+    }
+
+    public String getUrl() {
+        return url.toString();
     }
 
     public String getName() {
         return name;
     }
 
-    public Tags getTags() {
-        return tags;
+    public Set<String> getTags() {
+        return tags.toSet();
     }
 
     public boolean hasTag(String tag) {

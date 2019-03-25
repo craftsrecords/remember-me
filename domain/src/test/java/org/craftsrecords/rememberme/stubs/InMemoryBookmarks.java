@@ -4,7 +4,6 @@ import org.craftsrecords.rememberme.bookmark.AlreadyBookmarkedException;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.craftsrecords.rememberme.bookmark.Bookmarks;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,11 +11,11 @@ import java.util.Optional;
 
 public class InMemoryBookmarks implements Bookmarks {
 
-    private final Map<URL, Bookmark> bookmarks = new HashMap<>();
+    private final Map<String, Bookmark> bookmarks = new HashMap<>();
 
     @Override
     public Bookmark save(Bookmark bookmark) {
-        URL url = bookmark.getUrl();
+        String url = bookmark.getUrl();
         if (bookmarks.containsKey(url)) {
             throw new AlreadyBookmarkedException(url);
         }
@@ -25,7 +24,7 @@ public class InMemoryBookmarks implements Bookmarks {
     }
 
     @Override
-    public Optional<Bookmark> getBy(URL url) {
+    public Optional<Bookmark> getBy(String url) {
         Bookmark bookmark = bookmarks.get(url);
         return Optional.ofNullable(bookmark);
     }
