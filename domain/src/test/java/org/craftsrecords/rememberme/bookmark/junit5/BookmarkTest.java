@@ -39,10 +39,10 @@ class BookmarkTest {
         );
     }
 
-    @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "  ", "\t"})
     @DisplayName("Should not accept null, empty or blank name")
+    @ParameterizedTest(name = "\"{0}\"")
     void should_not_accept_a_invalid_name(String name) {
         assertThrows(
                 IllegalArgumentException.class,

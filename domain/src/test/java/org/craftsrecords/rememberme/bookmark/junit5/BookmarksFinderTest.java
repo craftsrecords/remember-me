@@ -6,6 +6,7 @@ import org.craftsrecords.rememberme.bookmark.Bookmarks;
 import org.craftsrecords.rememberme.bookmark.BookmarksFinder;
 import org.craftsrecords.rememberme.stubs.InMemoryBookmarks;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,15 +30,16 @@ class BookmarksFinderTest {
         findBookmarks = new BookmarksFinder(bookmarks);
     }
 
-    @ParameterizedTest
     @MethodSource
-    void should_retrieve_bookmarks_by_tags(String tag, Bookmark[] expected) {
+    @DisplayName("Should find the bookmarks by tag")
+    @ParameterizedTest(name = "\"{0}\" tag")
+    void findByTag(String tag, Bookmark[] expected) {
         Collection<Bookmark> bookmarks = findBookmarks.by(singleton(tag));
 
         assertThat(bookmarks).containsExactlyInAnyOrder(expected);
     }
 
-    static Stream<Arguments> should_retrieve_bookmarks_by_tags() {
+    static Stream<Arguments> findByTag() {
         Bookmark junit = saveBookmark("https://junit.org", "JUnit", "tests");
         Bookmark cucumber = saveBookmark("https://cucumber.io", "Cucumber", "tests", "bdd");
         Bookmark bdd = saveBookmark("https://en.wikipedia.org/wiki/BDD", "BDD", "bdd", "methodo");

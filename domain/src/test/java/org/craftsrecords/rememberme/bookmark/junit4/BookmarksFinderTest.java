@@ -47,7 +47,7 @@ public class BookmarksFinderTest {
     public Bookmark[] expected;
 
     @Test
-    public void should_retrieve_bookmarks_by_tags() {
+    public void should_find_bookmarks_by_tag() {
         Collection<Bookmark> bookmarks = findBookmarks.by(singleton(tag));
 
         assertThat(bookmarks).containsExactlyInAnyOrder(expected);
