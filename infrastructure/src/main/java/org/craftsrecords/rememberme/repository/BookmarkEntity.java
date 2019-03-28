@@ -4,6 +4,7 @@ import org.craftsrecords.rememberme.bookmark.Bookmark;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class BookmarkEntity {
 
     private String name;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> tags;
 
     public BookmarkEntity() {

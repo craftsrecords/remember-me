@@ -6,6 +6,8 @@ import org.craftsrecords.rememberme.repository.BookmarkEntity;
 import org.craftsrecords.rememberme.repository.BookmarkRepository;
 import org.craftsrecords.rememberme.repository.JpaBookmarkRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,36 +40,45 @@ class BookmarkRepositoryTest {
     }
 
     @Test
+    @DisplayName("Should save a bookmark")
     void should_save_bookmark() {
         Bookmark saved = bookmarkRepository.save(bookmark);
         assertThat(saved).isEqualTo(bookmark);
     }
 
-    @Test
-    void should_not_save_an_already_existent_bookmark() {
-        bookmarkRepository.save(bookmark);
+    @Nested
+    @DisplayName("When a bookmark is saved")
+    class WhenBookmarkIsSaved {
 
-        assertThrows(
-                AlreadyBookmarkedException.class,
-                () -> bookmarkRepository.save(bookmark),
-                URL + " is already bookmarked"
-        );
-    }
+        @BeforeEach
+        void set_up() {
+            jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
+        }
 
-    @Test
-    void should_retrieve_bookmark_by_url() {
-        jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
+        @Test
+        @DisplayName("it's not possible to save it again")
+        void should_not_save_an_already_existent_bookmark() {
+            assertThrows(
+                    AlreadyBookmarkedException.class,
+                    () -> bookmarkRepository.save(bookmark),
+                    URL + " is already bookmarked"
+            );
+        }
 
-        Optional<Bookmark> retrieved = bookmarkRepository.getBy(URL);
-        assertThat(retrieved).hasValue(bookmark);
-    }
+        @Test
+        @DisplayName("it should be accessible")
+        void should_retrieve_bookmark_by_url() {
+            Optional<Bookmark> retrieved = bookmarkRepository.getBy(URL);
+            assertThat(retrieved).hasValue(bookmark);
+        }
 
-    @Test
-    void should_retrieve_all_bookmarks() {
-        jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
+        @Test
+        @DisplayName("it should be accessible among all bookmarks")
+        void should_retrieve_all_bookmarks() {
+            Collection<Bookmark> retrieved = bookmarkRepository.getAll();
+            assertThat(retrieved).containsOnly(bookmark);
+        }
 
-        Collection<Bookmark> retrieved = bookmarkRepository.getAll();
-        assertThat(retrieved).containsOnly(bookmark);
     }
 
 }
