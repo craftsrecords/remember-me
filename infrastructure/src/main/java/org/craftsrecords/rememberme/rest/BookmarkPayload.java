@@ -2,7 +2,7 @@ package org.craftsrecords.rememberme.rest;
 
 import java.util.Collection;
 
-class BookmarkPayload {
+public class BookmarkPayload {
 
     public String url;
     public String name;
@@ -11,7 +11,7 @@ class BookmarkPayload {
     BookmarkPayload() {
     }
 
-    BookmarkPayload(String url, String name, Collection<String> tags) {
+    public BookmarkPayload(String url, String name, Collection<String> tags) {
         this.url = url;
         this.name = name;
         this.tags = tags;

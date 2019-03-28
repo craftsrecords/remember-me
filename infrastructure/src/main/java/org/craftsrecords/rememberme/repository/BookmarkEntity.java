@@ -27,7 +27,7 @@ public class BookmarkEntity {
         this.tags = tags;
     }
 
-    static BookmarkEntity from(Bookmark bookmark) {
+    public static BookmarkEntity from(Bookmark bookmark) {
         return new BookmarkEntity(
                 bookmark.getUrl(),
                 bookmark.getName(),

@@ -1,7 +1,10 @@
-package org.craftsrecords.rememberme.repository;
+package org.craftsrecords.rememberme.junit4.repository;
 
 import org.craftsrecords.rememberme.bookmark.AlreadyBookmarkedException;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
+import org.craftsrecords.rememberme.repository.BookmarkEntity;
+import org.craftsrecords.rememberme.repository.BookmarkRepository;
+import org.craftsrecords.rememberme.repository.JpaBookmarkRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 public class BookmarkRepositoryTest {
 
+    private static final String URL = "http://www.test.com";
+
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
@@ -29,13 +34,11 @@ public class BookmarkRepositoryTest {
 
     private BookmarkRepository bookmarkRepository;
     private Bookmark bookmark;
-    private String url;
 
     @Before
     public void set_up() {
         bookmarkRepository = new BookmarkRepository(jpaBookmarkRepository);
-        url = "http://www.test.com";
-        bookmark = Bookmark.create(url, "test", singleton("tag"));
+        bookmark = Bookmark.create(URL, "test", singleton("tag"));
     }
 
     @Test
@@ -56,7 +59,7 @@ public class BookmarkRepositoryTest {
     public void should_retrieve_bookmark_by_url() {
         jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
 
-        Optional<Bookmark> retrieved = bookmarkRepository.getBy(url);
+        Optional<Bookmark> retrieved = bookmarkRepository.getBy(URL);
         assertThat(retrieved).hasValue(bookmark);
     }
 

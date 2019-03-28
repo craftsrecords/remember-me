@@ -1,6 +1,9 @@
-package org.craftsrecords.rememberme.rest;
+package org.craftsrecords.rememberme.junit4.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.craftsrecords.rememberme.bookmark.Bookmark;
+import org.craftsrecords.rememberme.repository.BookmarkRepository;
+import org.craftsrecords.rememberme.rest.BookmarkPayload;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +14,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static java.util.Collections.singletonList;
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -25,6 +30,9 @@ public class BookmarkControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
 
     @Test
     public void should_respond_201_when_the_bookmark_is_created() throws Exception {
@@ -57,11 +65,42 @@ public class BookmarkControllerTest {
     }
 
     @Test
+    public void should_respond_409_when_the_bookmark_already_exists() throws Exception {
+        Bookmark bookmark = Bookmark.create(
+                "http://www.test2.com",
+                "name",
+                singletonList("tag")
+        );
+        bookmarkRepository.save(bookmark);
+
+        BookmarkPayload bookmarkPayload = new BookmarkPayload(
+                "http://www.test2.com",
+                "name",
+                singletonList("tag")
+        );
+
+        mockMvc.perform(
+                post("/bookmarks")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(objectMapper.writeValueAsString(bookmarkPayload)))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
     public void should_respond_200_when_a_search_is_successfully_done() throws Exception {
+        Bookmark bookmark = Bookmark.create(
+                "http://www.test3.com",
+                "name",
+                singletonList("tag")
+        );
+        bookmarkRepository.save(bookmark);
+
         mockMvc.perform(
                 get("/bookmarks")
-                        .param("tags", "craftsmanship", "clean-code"))
-                .andExpect(status().isOk());
+                        .param("tags", "tag"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].url", is(bookmark.getUrl())))
+                .andExpect(jsonPath("$[0].name", is(bookmark.getName())));
     }
 
 }
