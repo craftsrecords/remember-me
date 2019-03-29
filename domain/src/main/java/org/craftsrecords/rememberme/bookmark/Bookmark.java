@@ -19,17 +19,22 @@ public class Bookmark {
     }
 
     public static Bookmark create(String url, String name, Collection<String> tags) {
-        try {
-            checkIfEmpty(name);
-            return new Bookmark(new URL(url), name, new Tags(tags));
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Invalid url: " + e.getMessage());
-        }
+        checkIfEmpty(name);
+        URL validUrl = checkIfValid(url);
+        return new Bookmark(validUrl, name, Tags.of(tags));
     }
 
     private static void checkIfEmpty(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Invalid name: it should not be empty");
+        }
+    }
+
+    private static URL checkIfValid(String url) {
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid url: " + e.getMessage());
         }
     }
 

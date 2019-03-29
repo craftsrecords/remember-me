@@ -5,25 +5,23 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static java.util.Collections.emptySet;
-
 public class Tags {
 
     private Set<String> tags;
 
-    public Tags(Collection<String> tags) {
+    private Tags(Collection<String> tags) {
         this.tags = new HashSet<>(tags);
     }
 
-    static Tags empty() {
-        return new Tags(emptySet());
+    public static Tags of(Collection<String> tags) {
+        return new Tags(new HashSet<>(tags));
     }
 
-    public Set<String> toSet() {
+    Set<String> toSet() {
         return Collections.unmodifiableSet(tags);
     }
 
-    public boolean contains(String tag) {
+    boolean contains(String tag) {
         return tags.contains(tag);
     }
 

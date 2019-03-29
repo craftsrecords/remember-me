@@ -17,31 +17,27 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Collection;
 import java.util.Optional;
 
-import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
+@ExtendWith(BookmarkParameterResolver.class)
 class BookmarkRepositoryTest {
-
-    private static final String URL = "http://www.test.com";
 
     @Autowired
     private JpaBookmarkRepository jpaBookmarkRepository;
 
     private BookmarkRepository bookmarkRepository;
-    private Bookmark bookmark;
 
     @BeforeEach
     void set_up() {
         bookmarkRepository = new BookmarkRepository(jpaBookmarkRepository);
-        bookmark = Bookmark.create(URL, "test", singleton("tag"));
     }
 
     @Test
     @DisplayName("Should save a bookmark")
-    void should_save_bookmark() {
+    void should_save_bookmark(@Random Bookmark bookmark) {
         Bookmark saved = bookmarkRepository.save(bookmark);
         assertThat(saved).isEqualTo(bookmark);
     }
@@ -50,9 +46,12 @@ class BookmarkRepositoryTest {
     @DisplayName("When a bookmark is saved")
     class WhenBookmarkIsSaved {
 
+        private Bookmark savedBookmark;
+
         @BeforeEach
-        void set_up() {
+        void set_up(@Random Bookmark bookmark) {
             jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
+            savedBookmark = bookmark;
         }
 
         @Test
@@ -60,23 +59,24 @@ class BookmarkRepositoryTest {
         void should_not_save_an_already_existent_bookmark() {
             assertThrows(
                     AlreadyBookmarkedException.class,
-                    () -> bookmarkRepository.save(bookmark),
-                    URL + " is already bookmarked"
+                    () -> bookmarkRepository.save(savedBookmark),
+                    savedBookmark.getUrl() + " is already bookmarked"
             );
         }
 
         @Test
         @DisplayName("it should be accessible")
         void should_retrieve_bookmark_by_url() {
-            Optional<Bookmark> retrieved = bookmarkRepository.getBy(URL);
-            assertThat(retrieved).hasValue(bookmark);
+            String url = savedBookmark.getUrl();
+            Optional<Bookmark> retrieved = bookmarkRepository.getBy(url);
+            assertThat(retrieved).hasValue(savedBookmark);
         }
 
         @Test
         @DisplayName("it should be accessible among all bookmarks")
         void should_retrieve_all_bookmarks() {
             Collection<Bookmark> retrieved = bookmarkRepository.getAll();
-            assertThat(retrieved).containsOnly(bookmark);
+            assertThat(retrieved).contains(savedBookmark);
         }
 
     }

@@ -9,12 +9,12 @@ class TagsTest implements EqualityTest<Tags> {
 
     @Override
     public Tags createValue() {
-        return new Tags(emptySet());
+        return Tags.of(emptySet());
     }
 
     @Override
     public Tags createOtherValue() {
-        return new Tags(singleton("tag"));
+        return Tags.of(singleton("tag"));
     }
 
 }

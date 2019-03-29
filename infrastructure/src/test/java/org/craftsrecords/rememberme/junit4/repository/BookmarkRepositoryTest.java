@@ -68,7 +68,7 @@ public class BookmarkRepositoryTest {
         jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
 
         Collection<Bookmark> retrieved = bookmarkRepository.getAll();
-        assertThat(retrieved).containsOnly(bookmark);
+        assertThat(retrieved).contains(bookmark);
     }
 
 }
