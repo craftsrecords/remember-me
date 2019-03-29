@@ -4,6 +4,7 @@ import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -17,11 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BookmarkTest implements EqualityTest<Bookmark> {
 
-    @Test
-    void should_create_the_bookmark() {
-        String url = "http://www.test.com";
-        String name = "Some name";
-        Set<String> tags = singleton("tag");
+    @ParameterizedTest(name = "{1}")
+    @CsvSource({
+            "http://www.test.com, Some name, tag",
+            "http://www.test.com/path, Some other name, another-tag"
+    })
+    @DisplayName("Should create the bookmark")
+    void should_create_the_bookmark(String url, String name, String tag) {
+        Set<String> tags = singleton(tag);
         Bookmark createdBookmark = Bookmark.create(url, name, tags);
 
         assertAll(
@@ -32,6 +36,7 @@ class BookmarkTest implements EqualityTest<Bookmark> {
     }
 
     @Test
+    @DisplayName("Should not accept an invalid url")
     void should_not_accept_an_invalid_url() {
         assertThrows(
                 IllegalArgumentException.class,
