@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class BookmarkTest {
+class BookmarkTest implements EqualityTest<Bookmark> {
 
     @Test
     void should_create_the_bookmark() {
@@ -49,6 +49,16 @@ class BookmarkTest {
                 () -> Bookmark.create("http://www.test.com", name, emptySet()),
                 "Invalid name: it should not be empty"
         );
+    }
+
+    @Override
+    public Bookmark createValue() {
+        return Bookmark.create("http://www.test.com", "name", emptySet());
+    }
+
+    @Override
+    public Bookmark createOtherValue() {
+        return Bookmark.create("http://www.test2.com", "other name", singleton("tag"));
     }
 
 }
