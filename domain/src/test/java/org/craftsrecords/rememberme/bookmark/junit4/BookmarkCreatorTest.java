@@ -5,10 +5,7 @@ import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.craftsrecords.rememberme.bookmark.BookmarkCreator;
 import org.craftsrecords.rememberme.bookmark.Bookmarks;
 import org.craftsrecords.rememberme.stubs.InMemoryBookmarks;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Optional;
 import java.util.Set;
@@ -49,8 +46,8 @@ public class BookmarkCreatorTest {
         createBookmark.forResource(url, name, tags);
 
         Optional<Bookmark> saved = bookmarks.getBy(url);
-        Bookmark expected = Bookmark.create(url, name, tags);
 
+        Bookmark expected = Bookmark.create(url, name, tags);
         assertThat(saved).hasValue(expected);
     }
 
@@ -59,6 +56,12 @@ public class BookmarkCreatorTest {
         Bookmark createdBookmark = createBookmark.forResource(url, name, tags);
 
         assertThat(createdBookmark).isNotNull();
+    }
+
+    @Test
+    @Ignore("Reason why this is not run")
+    public void should_not_be_run() {
+        Assert.fail();
     }
 
 }

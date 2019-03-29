@@ -47,8 +47,8 @@ class BookmarkCreatorTest {
         createBookmark.forResource(url, name, tags);
 
         Optional<Bookmark> saved = bookmarks.getBy(url);
-        Bookmark expected = Bookmark.create(url, name, tags);
 
+        Bookmark expected = Bookmark.create(url, name, tags);
         assertThat(saved).hasValue(expected);
     }
 
@@ -58,6 +58,12 @@ class BookmarkCreatorTest {
         Bookmark createdBookmark = createBookmark.forResource(url, name, tags);
 
         assertThat(createdBookmark).isNotNull();
+    }
+
+    @Test
+    @Disabled("Reason why this is not run")
+    void should_not_be_run() {
+        Assertions.fail();
     }
 
 }
