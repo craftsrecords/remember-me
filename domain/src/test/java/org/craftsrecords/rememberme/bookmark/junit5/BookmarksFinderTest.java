@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -34,7 +33,7 @@ class BookmarksFinderTest {
     @DisplayName("Should find the bookmarks by tag")
     @ParameterizedTest(name = "\"{0}\" tag")
     void findByTag(String tag, Bookmark[] expected) {
-        Collection<Bookmark> bookmarks = findBookmarks.by(singleton(tag));
+        Collection<Bookmark> bookmarks = findBookmarks.by(tag);
 
         assertThat(bookmarks).containsExactlyInAnyOrder(expected);
     }

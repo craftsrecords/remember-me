@@ -6,5 +6,5 @@ import java.util.Collection;
 
 @FunctionalInterface
 public interface FindBookmarks {
-    Collection<Bookmark> by(Collection<String> tags);
+    Collection<Bookmark> by(String tags);
 }

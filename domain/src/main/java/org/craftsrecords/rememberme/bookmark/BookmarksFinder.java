@@ -14,9 +14,9 @@ public class BookmarksFinder implements FindBookmarks {
     }
 
     @Override
-    public Collection<Bookmark> by(Collection<String> tags) {
+    public Collection<Bookmark> by(String tag) {
         return bookmarks.getAll().stream()
-                .filter(bookmark -> tags.stream().anyMatch(bookmark::hasTag))
+                .filter(bookmark -> bookmark.hasTag(tag))
                 .collect(Collectors.toSet());
     }
 

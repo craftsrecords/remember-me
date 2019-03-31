@@ -45,7 +45,7 @@ public class BookmarkStepDefs implements En {
         Given("^some bookmarks I saved$",
                 () -> createBookmarks().forEach(bookmarks::save));
 
-        Given("^some themes I want to read about$",
+        Given("^a theme I want to read about$",
                 () -> context.searchedTag = "test");
 
         When("^I bookmark it$",
@@ -57,8 +57,8 @@ public class BookmarkStepDefs implements En {
                     }
                 });
 
-        When("^I search for bookmarks about these themes$",
-                () -> context.searchResults = findBookmarks.by(singleton(context.searchedTag)));
+        When("^I search for bookmarks about this theme$",
+                () -> context.searchResults = findBookmarks.by(context.searchedTag));
 
         Then("^it is saved among my other bookmarks$",
                 () -> {
@@ -76,7 +76,7 @@ public class BookmarkStepDefs implements En {
         Then("^I am notified that the bookmark already exists$",
                 () -> assertThat(context.alreadyBookmarked).isTrue());
 
-        Then("^I get bookmarks tagged with these themes$",
+        Then("^I get bookmarks tagged with it$",
                 () -> context.searchResults.forEach(
                         bookmark -> assertThat(bookmark.hasTag(context.searchedTag)).isTrue()
                 ));

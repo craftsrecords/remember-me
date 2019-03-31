@@ -16,7 +16,6 @@ public class BookmarkTest {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-
     @Test
     public void should_create_the_bookmark() {
         String url = "http://www.test.com";

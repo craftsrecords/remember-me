@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.runners.Parameterized.Parameter;
 
@@ -48,7 +47,7 @@ public class BookmarksFinderTest {
 
     @Test
     public void should_find_bookmarks_by_tag() {
-        Collection<Bookmark> bookmarks = findBookmarks.by(singleton(tag));
+        Collection<Bookmark> bookmarks = findBookmarks.by(tag);
 
         assertThat(bookmarks).containsExactlyInAnyOrder(expected);
     }

@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -36,8 +37,8 @@ class BookmarkControllerTest {
 
     private BookmarkPayload bookmarkPayload = new BookmarkPayload(
             "http://www.test.com",
-            "name",
-            singletonList("tag")
+            "A test link",
+            singletonList("good-stuff")
     );
 
     @Test
@@ -54,8 +55,8 @@ class BookmarkControllerTest {
     void should_respond_400_when_the_request_is_invalid() throws Exception {
         BookmarkPayload bookmarkPayload = new BookmarkPayload(
                 "invalid://url.com",
-                "name",
-                singletonList("tag")
+                "An invalid link",
+                emptyList()
         );
 
         mockMvc.perform(
@@ -64,7 +65,6 @@ class BookmarkControllerTest {
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isBadRequest());
     }
-
 
     @Test
     void should_respond_409_when_the_bookmark_already_exists() throws Exception {
@@ -79,9 +79,8 @@ class BookmarkControllerTest {
     void should_respond_200_when_a_search_is_successfully_done() throws Exception {
         mockMvc.perform(
                 get("/bookmarks")
-                        .param("tags", "tag"))
+                        .param("tag", "good-stuff"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].url", is(bookmarkPayload.url)))
                 .andExpect(jsonPath("$[0].name", is(bookmarkPayload.name)));
     }
 

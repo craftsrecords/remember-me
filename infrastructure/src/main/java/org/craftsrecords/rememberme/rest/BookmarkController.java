@@ -31,8 +31,8 @@ public class BookmarkController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Bookmark>> getBookmarksByTags(@RequestParam("tags") Collection<String> tags) {
-        Collection<Bookmark> bookmarks = findBookmarks.by(tags);
+    public ResponseEntity<Collection<Bookmark>> getBookmarksByTags(@RequestParam("tag") String tag) {
+        Collection<Bookmark> bookmarks = findBookmarks.by(tag);
         return ResponseEntity.ok(bookmarks);
     }
 
