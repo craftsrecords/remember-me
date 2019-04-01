@@ -2,7 +2,12 @@ package org.craftsrecords.rememberme.bookmark;
 
 import org.craftsrecords.rememberme.api.CreateBookmark;
 import org.craftsrecords.rememberme.stubs.InMemoryBookmarks;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.Optional;
 import java.util.Set;
