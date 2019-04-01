@@ -1,6 +1,5 @@
-package org.craftsrecords.rememberme.bookmark.junit4;
+package org.craftsrecords.rememberme.bookmark;
 
-import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

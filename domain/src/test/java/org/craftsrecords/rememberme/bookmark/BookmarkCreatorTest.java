@@ -1,9 +1,6 @@
-package org.craftsrecords.rememberme.bookmark.junit4;
+package org.craftsrecords.rememberme.bookmark;
 
 import org.craftsrecords.rememberme.api.CreateBookmark;
-import org.craftsrecords.rememberme.bookmark.Bookmark;
-import org.craftsrecords.rememberme.bookmark.BookmarkCreator;
-import org.craftsrecords.rememberme.bookmark.Bookmarks;
 import org.craftsrecords.rememberme.stubs.InMemoryBookmarks;
 import org.junit.*;
 

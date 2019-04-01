@@ -1,10 +1,7 @@
-package org.craftsrecords.rememberme.junit4.repository;
+package org.craftsrecords.rememberme.repository;
 
 import org.craftsrecords.rememberme.bookmark.AlreadyBookmarkedException;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
-import org.craftsrecords.rememberme.repository.BookmarkEntity;
-import org.craftsrecords.rememberme.repository.BookmarkRepository;
-import org.craftsrecords.rememberme.repository.JpaBookmarkRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,7 +46,7 @@ public class BookmarkRepositoryTest {
 
     @Test
     public void should_not_save_an_already_existent_bookmark() {
-        bookmarkRepository.save(bookmark);
+        jpaBookmarkRepository.save(BookmarkEntity.from(bookmark));
 
         exception.expect(AlreadyBookmarkedException.class);
         bookmarkRepository.save(bookmark);

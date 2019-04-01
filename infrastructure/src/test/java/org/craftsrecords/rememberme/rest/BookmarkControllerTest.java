@@ -1,9 +1,8 @@
-package org.craftsrecords.rememberme.junit4.rest;
+package org.craftsrecords.rememberme.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.craftsrecords.rememberme.repository.BookmarkRepository;
-import org.craftsrecords.rememberme.rest.BookmarkPayload;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
