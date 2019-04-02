@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,21 +46,6 @@ public class BookmarkControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isCreated());
-    }
-
-    @Test
-    public void should_respond_400_when_the_request_is_invalid() throws Exception {
-        BookmarkPayload bookmarkPayload = new BookmarkPayload(
-                "invalid://url.com",
-                "An invalid link",
-                emptyList()
-        );
-
-        mockMvc.perform(
-                post("/bookmarks")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(bookmarkPayload)))
-                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -101,5 +85,4 @@ public class BookmarkControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", is(bookmark.getName())));
     }
-
 }

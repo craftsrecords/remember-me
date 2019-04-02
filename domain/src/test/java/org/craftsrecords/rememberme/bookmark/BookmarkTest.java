@@ -28,15 +28,8 @@ public class BookmarkTest {
     }
 
     @Test
-    public void should_not_accept_an_invalid_url() {
-        exception.expect(IllegalArgumentException.class);
-        Bookmark.create("invalid_url", "name", emptySet());
-    }
-
-    @Test
     public void should_not_accept_an_empty_name() {
         exception.expect(IllegalArgumentException.class);
         Bookmark.create("http://www.test.com", "  ", emptySet());
     }
-
 }
