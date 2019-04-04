@@ -44,6 +44,7 @@ public class BookmarkCreatorTest {
     }
 
     @Test
+    @Ignore("Not implemented yet")
     public void should_create_the_bookmark() {
         createBookmark.forResource(url, name, tags);
 
@@ -57,13 +58,7 @@ public class BookmarkCreatorTest {
     public void should_return_the_bookmark_after_creating_it() {
         Bookmark createdBookmark = createBookmark.forResource(url, name, tags);
 
-        assertThat(createdBookmark).isNotNull();
-    }
-
-    @Test
-    @Ignore("Reason why this is not run")
-    public void should_not_be_run() {
-        Assert.fail();
+        Assert.assertNotNull(createdBookmark);
     }
 
 }
