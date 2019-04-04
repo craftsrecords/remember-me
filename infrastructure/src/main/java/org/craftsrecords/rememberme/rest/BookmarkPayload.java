@@ -17,4 +17,7 @@ public class BookmarkPayload {
         this.tags = tags;
     }
 
+    public String getName() {
+        return name;
+    }
 }
