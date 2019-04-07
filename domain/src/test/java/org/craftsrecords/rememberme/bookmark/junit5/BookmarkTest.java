@@ -49,11 +49,11 @@ class BookmarkTest implements EqualityTest<Bookmark> {
     @DisplayName("Should not accept null, empty or blank name")
     @ParameterizedTest(name = "\"{0}\"")
     void should_not_accept_a_invalid_name(String name) {
-        assertThrows(
+        Exception exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> Bookmark.create("http://www.test.com", name, emptySet()),
-                "Invalid name: it should not be empty"
+                () -> Bookmark.create("http://www.test.com", name, emptySet())
         );
+        assertThat(exception.getMessage()).isEqualTo("Invalid name: it should not be empty");
     }
 
     @Override
