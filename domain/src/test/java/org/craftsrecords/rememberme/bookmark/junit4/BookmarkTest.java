@@ -37,6 +37,12 @@ public class BookmarkTest {
     @Test
     public void should_not_accept_an_empty_name() {
         exception.expect(IllegalArgumentException.class);
+        Bookmark.create("http://www.test.com", "", emptySet());
+    }
+
+    @Test
+    public void should_not_accept_an_blank_name() {
+        exception.expect(IllegalArgumentException.class);
         Bookmark.create("http://www.test.com", "  ", emptySet());
     }
 

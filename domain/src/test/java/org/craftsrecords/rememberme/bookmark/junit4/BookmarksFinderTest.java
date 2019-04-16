@@ -21,12 +21,24 @@ import static org.junit.runners.Parameterized.Parameter;
 public class BookmarksFinderTest {
 
     private static Bookmarks bookmarks;
-    private static FindBookmarks findBookmarks;
+
+    @Parameter
+    public String tag;
+
+    @Parameter(1)
+    public Bookmark[] expected;
+
+    @Test
+    public void should_find_bookmarks_by_tag() {
+        FindBookmarks findBookmarks = new BookmarksFinder(bookmarks);
+        Collection<Bookmark> bookmarks = findBookmarks.by(tag);
+
+        assertThat(bookmarks).containsExactlyInAnyOrder(expected);
+    }
 
     @Parameters
     public static Collection<Object[]> testCases() {
         bookmarks = new InMemoryBookmarks();
-        findBookmarks = new BookmarksFinder(bookmarks);
 
         Bookmark junit = saveBookmark("https://junit.org", "JUnit", "tests");
         Bookmark cucumber = saveBookmark("https://cucumber.io", "Cucumber", "tests", "bdd");
@@ -39,21 +51,9 @@ public class BookmarksFinderTest {
         });
     }
 
-    @Parameter
-    public String tag;
-
-    @Parameter(1)
-    public Bookmark[] expected;
-
-    @Test
-    public void should_find_bookmarks_by_tag() {
-        Collection<Bookmark> bookmarks = findBookmarks.by(tag);
-
-        assertThat(bookmarks).containsExactlyInAnyOrder(expected);
-    }
-
     private static Bookmark saveBookmark(String url, String name, String... tags) {
         Bookmark bookmark = Bookmark.create(url, name, asList(tags));
         return bookmarks.save(bookmark);
     }
+
 }
