@@ -17,23 +17,27 @@ public class BookmarkParameterResolver implements ParameterResolver {
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return parameterContext.isAnnotated(Random.class) &&
-                parameterContext.getParameter().getType() == Bookmark.class;
+        return parameterContext.getParameter().getType() == Bookmark.class;
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        List<Bookmark> bookmarks = createBookmarks();
-        Collections.shuffle(bookmarks);
-        return bookmarks.get(0);
+        if (parameterContext.isAnnotated(Random.class)) {
+            return randomBookmark();
+        }
+        if (parameterContext.isAnnotated(Video.class)) {
+            return Bookmark.create("http://www.youtube.com/watch?v=ABCD", "Cool video", emptySet());
+        }
+        return Bookmark.create("http://www.google.com", "Default bookmark", emptySet());
     }
 
-    private List<Bookmark> createBookmarks() {
+    private Bookmark randomBookmark() {
         List<Bookmark> bookmarks = new ArrayList<>();
         bookmarks.add(Bookmark.create("http://www.junit.org", "JUnit", singleton("test")));
         bookmarks.add(Bookmark.create("http://www.medium.com", "Medium", emptySet()));
         bookmarks.add(Bookmark.create("http://www.youtube.com", "YouTube", singleton("videos")));
-        return bookmarks;
+        Collections.shuffle(bookmarks);
+        return bookmarks.get(0);
     }
 
 }
