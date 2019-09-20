@@ -23,6 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @InjectBookmark
+/*
+InjectBookmark can be set globally and removed from this test by adding in META-INF/services/ org.junit.jupiter.api.extension.Extension
+and set junit.jupiter.extensions.autodetection.enabled to true in the surefire configuration
+ */
 class BookmarkRepositoryTest {
 
     @Autowired
@@ -78,7 +82,5 @@ class BookmarkRepositoryTest {
             Collection<Bookmark> retrieved = bookmarkRepository.getAll();
             assertThat(retrieved).contains(savedBookmark);
         }
-
     }
-
 }
