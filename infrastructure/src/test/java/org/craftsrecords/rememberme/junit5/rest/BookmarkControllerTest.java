@@ -1,7 +1,6 @@
 package org.craftsrecords.rememberme.junit5.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.craftsrecords.rememberme.repository.BookmarkRepository;
 import org.craftsrecords.rememberme.rest.BookmarkPayload;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,12 +28,6 @@ class BookmarkControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private BookmarkRepository bookmarkRepository;
-
     private BookmarkPayload bookmarkPayload = new BookmarkPayload(
             "http://www.test.com",
             "A test link",
@@ -43,16 +36,16 @@ class BookmarkControllerTest {
 
     @Test
     @Order(1)
-    void should_respond_201_when_the_bookmark_is_created() throws Exception {
+    void should_respond_201_when_the_bookmark_is_created(@Autowired ObjectMapper objectMapper) throws Exception {
         mockMvc.perform(
                 post("/bookmarks")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    void should_respond_400_when_the_request_is_invalid() throws Exception {
+    void should_respond_400_when_the_request_is_invalid(@Autowired ObjectMapper objectMapper) throws Exception {
         BookmarkPayload bookmarkPayload = new BookmarkPayload(
                 "invalid://url.com",
                 "An invalid link",
@@ -61,16 +54,16 @@ class BookmarkControllerTest {
 
         mockMvc.perform(
                 post("/bookmarks")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void should_respond_409_when_the_bookmark_already_exists() throws Exception {
+    void should_respond_409_when_the_bookmark_already_exists(@Autowired ObjectMapper objectMapper) throws Exception {
         mockMvc.perform(
                 post("/bookmarks")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isConflict());
     }
@@ -83,5 +76,4 @@ class BookmarkControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", is(bookmarkPayload.name)));
     }
-
 }
