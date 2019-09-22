@@ -43,7 +43,7 @@ public class BookmarkControllerTest {
 
         mockMvc.perform(
                 post("/bookmarks")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isCreated());
     }
@@ -65,7 +65,7 @@ public class BookmarkControllerTest {
 
         mockMvc.perform(
                 post("/bookmarks")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isConflict());
     }
