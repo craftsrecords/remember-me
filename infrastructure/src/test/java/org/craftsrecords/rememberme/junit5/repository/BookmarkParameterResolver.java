@@ -25,9 +25,6 @@ public class BookmarkParameterResolver implements ParameterResolver {
         if (parameterContext.isAnnotated(Random.class)) {
             return randomBookmark();
         }
-        if (parameterContext.isAnnotated(Video.class)) {
-            return Bookmark.create("http://www.youtube.com/watch?v=ABCD", "Cool video", emptySet());
-        }
         return Bookmark.create("http://www.google.com", "Default bookmark", emptySet());
     }
 

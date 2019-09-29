@@ -41,7 +41,7 @@ class BookmarkRepositoryTest {
 
     @Test
     @DisplayName("Should save a bookmark")
-    void should_save_bookmark(@Video Bookmark bookmark) {
+    void should_save_bookmark(Bookmark bookmark) {
         Bookmark saved = bookmarkRepository.save(bookmark);
         assertThat(saved).isEqualTo(bookmark);
     }
