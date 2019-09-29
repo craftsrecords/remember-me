@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class BookmarkPayloadResolver implements ParameterResolver {
@@ -17,6 +18,9 @@ public class BookmarkPayloadResolver implements ParameterResolver {
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        if (parameterContext.isAnnotated(Invalid.class)) {
+            return new BookmarkPayload("invalid://url.com", "An invalid link", emptyList());
+        }
         return new BookmarkPayload("http://www.test.com", "A test link", singletonList("good-stuff"));
     }
 

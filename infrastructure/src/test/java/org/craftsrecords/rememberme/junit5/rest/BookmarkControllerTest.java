@@ -2,6 +2,7 @@ package org.craftsrecords.rememberme.junit5.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.craftsrecords.rememberme.junit5.resolvers.BookmarkPayloadResolver;
+import org.craftsrecords.rememberme.junit5.resolvers.Invalid;
 import org.craftsrecords.rememberme.rest.BookmarkPayload;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,13 +40,8 @@ class BookmarkControllerTest {
     }
 
     @Test
-    void should_respond_400_when_the_request_is_invalid(@Autowired ObjectMapper objectMapper) throws Exception {
-        BookmarkPayload bookmarkPayload = new BookmarkPayload(
-                "invalid://url.com",
-                "An invalid link",
-                emptyList()
-        );
-
+    void should_respond_400_when_the_request_is_invalid(@Autowired ObjectMapper objectMapper,
+                                                        @Invalid BookmarkPayload bookmarkPayload) throws Exception {
         mockMvc.perform(
                 post("/bookmarks")
                         .contentType(MediaType.APPLICATION_JSON)
