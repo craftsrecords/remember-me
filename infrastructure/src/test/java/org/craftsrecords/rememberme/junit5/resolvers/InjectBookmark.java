@@ -1,4 +1,4 @@
-package org.craftsrecords.rememberme.junit5.repository;
+package org.craftsrecords.rememberme.junit5.resolvers;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@ExtendWith(BookmarkParameterResolver.class)
-@interface InjectBookmark {
+@ExtendWith(BookmarkResolver.class)
+public @interface InjectBookmark {
 }

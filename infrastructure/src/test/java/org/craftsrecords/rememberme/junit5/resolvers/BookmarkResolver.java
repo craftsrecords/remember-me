@@ -1,4 +1,4 @@
-package org.craftsrecords.rememberme.junit5.repository;
+package org.craftsrecords.rememberme.junit5.resolvers;
 
 import org.craftsrecords.rememberme.bookmark.Bookmark;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -13,7 +13,7 @@ import java.util.List;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
-public class BookmarkParameterResolver implements ParameterResolver {
+public class BookmarkResolver implements ParameterResolver {
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {

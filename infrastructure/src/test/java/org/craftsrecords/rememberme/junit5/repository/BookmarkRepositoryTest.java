@@ -2,6 +2,8 @@ package org.craftsrecords.rememberme.junit5.repository;
 
 import org.craftsrecords.rememberme.bookmark.AlreadyBookmarkedException;
 import org.craftsrecords.rememberme.bookmark.Bookmark;
+import org.craftsrecords.rememberme.junit5.resolvers.InjectBookmark;
+import org.craftsrecords.rememberme.junit5.resolvers.Random;
 import org.craftsrecords.rememberme.repository.BookmarkEntity;
 import org.craftsrecords.rememberme.repository.BookmarkRepository;
 import org.craftsrecords.rememberme.repository.JpaBookmarkRepository;
