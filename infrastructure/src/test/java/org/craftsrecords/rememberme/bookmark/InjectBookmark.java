@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@ExtendWith(BookmarkParameterResolver.class)
+@ExtendWith(BookmarkResolver.class)
 public @interface InjectBookmark {
 }

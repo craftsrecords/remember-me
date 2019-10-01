@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 
 import static java.util.Collections.singleton;
 
-public class BookmarkParameterResolver implements ParameterResolver {
+public class BookmarkResolver implements ParameterResolver {
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
