@@ -72,4 +72,13 @@ public class Bookmark {
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Bookmark{" +
+                "url=" + url +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
 }
