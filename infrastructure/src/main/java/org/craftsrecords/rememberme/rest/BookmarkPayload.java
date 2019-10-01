@@ -1,5 +1,7 @@
 package org.craftsrecords.rememberme.rest;
 
+import org.craftsrecords.rememberme.bookmark.Bookmark;
+
 import java.util.Collection;
 
 public class BookmarkPayload {
@@ -19,5 +21,9 @@ public class BookmarkPayload {
 
     public String getName() {
         return name;
+    }
+
+    public Bookmark toBookmark() {
+        return Bookmark.create(url, name, tags);
     }
 }
