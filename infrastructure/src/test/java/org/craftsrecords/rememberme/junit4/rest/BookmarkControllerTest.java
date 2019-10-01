@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class BookmarkControllerTest {
 
     @Autowired
@@ -35,14 +37,14 @@ public class BookmarkControllerTest {
     @Autowired
     private BookmarkRepository bookmarkRepository;
 
+    private static final BookmarkPayload bookmarkPayload = new BookmarkPayload(
+            "http://www.test.com",
+            "A test link",
+            singletonList("good-stuff")
+    );
+
     @Test
     public void should_respond_201_when_the_bookmark_is_created() throws Exception {
-        BookmarkPayload bookmarkPayload = new BookmarkPayload(
-                "http://www.test.com",
-                "A test link",
-                singletonList("good-stuff")
-        );
-
         mockMvc.perform(
                 post("/bookmarks")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -67,18 +69,7 @@ public class BookmarkControllerTest {
 
     @Test
     public void should_respond_409_when_the_bookmark_already_exists() throws Exception {
-        Bookmark bookmark = Bookmark.create(
-                "http://www.test2.com",
-                "A test link",
-                singletonList("good-stuff")
-        );
-        bookmarkRepository.save(bookmark);
-
-        BookmarkPayload bookmarkPayload = new BookmarkPayload(
-                "http://www.test2.com",
-                "A test link",
-                singletonList("good-stuff")
-        );
+        bookmarkRepository.save(bookmarkPayload.toBookmark());
 
         mockMvc.perform(
                 post("/bookmarks")
@@ -89,18 +80,12 @@ public class BookmarkControllerTest {
 
     @Test
     public void should_respond_200_when_a_search_is_successfully_done() throws Exception {
-        Bookmark bookmark = Bookmark.create(
-                "http://www.test3.com",
-                "A test link",
-                singletonList("good-stuff")
-        );
-        bookmarkRepository.save(bookmark);
+        bookmarkRepository.save(bookmarkPayload.toBookmark());
 
         mockMvc.perform(
                 get("/bookmarks")
                         .param("tag", "good-stuff"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is(bookmark.getName())));
+                .andExpect(status().isOk());
     }
 
 }
