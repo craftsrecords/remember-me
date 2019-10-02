@@ -46,19 +46,6 @@ public class BookmarkControllerTest {
     }
 
     @Test
-    public void should_respond_200_when_a_search_is_successfully_done() throws Exception {
-        mockMvc.perform(
-                post("/bookmarks")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookmarkPayload)));
-
-        mockMvc.perform(
-                get("/bookmarks")
-                        .param("tag", "good-stuff"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void should_respond_409_when_the_bookmark_already_exists() throws Exception {
         mockMvc.perform(
                 post("/bookmarks")
@@ -70,6 +57,19 @@ public class BookmarkControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    public void should_respond_200_when_a_search_is_successfully_done() throws Exception {
+        mockMvc.perform(
+                post("/bookmarks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(bookmarkPayload)));
+
+        mockMvc.perform(
+                get("/bookmarks")
+                        .param("tag", "good-stuff"))
+                .andExpect(status().isOk());
     }
 
     @Test
