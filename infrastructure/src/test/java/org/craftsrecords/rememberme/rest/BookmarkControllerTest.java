@@ -1,7 +1,6 @@
 package org.craftsrecords.rememberme.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.craftsrecords.rememberme.repository.BookmarkRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class BookmarkControllerTest {
 
     @Autowired
@@ -29,9 +29,6 @@ public class BookmarkControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private BookmarkRepository bookmarkRepository;
 
     private static final BookmarkPayload bookmarkPayload = new BookmarkPayload(
             "http://www.test.com",
@@ -49,8 +46,24 @@ public class BookmarkControllerTest {
     }
 
     @Test
+    public void should_respond_200_when_a_search_is_successfully_done() throws Exception {
+        mockMvc.perform(
+                post("/bookmarks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(bookmarkPayload)));
+
+        mockMvc.perform(
+                get("/bookmarks")
+                        .param("tag", "good-stuff"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     public void should_respond_409_when_the_bookmark_already_exists() throws Exception {
-        bookmarkRepository.save(bookmarkPayload.toBookmark());
+        mockMvc.perform(
+                post("/bookmarks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(bookmarkPayload)));
 
         mockMvc.perform(
                 post("/bookmarks")
@@ -73,15 +86,4 @@ public class BookmarkControllerTest {
                         .content(objectMapper.writeValueAsString(bookmarkPayload)))
                 .andExpect(status().isBadRequest());
     }
-
-    @Test
-    public void should_respond_200_when_a_search_is_successfully_done() throws Exception {
-        bookmarkRepository.save(bookmarkPayload.toBookmark());
-
-        mockMvc.perform(
-                get("/bookmarks")
-                        .param("tag", "good-stuff"))
-                .andExpect(status().isOk());
-    }
-
 }
